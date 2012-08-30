@@ -29,5 +29,6 @@ function mktmpdir() {
 }
 
 mkdir -p "$BUILD_DIR/bin"
-curl $ES_PACKAGE -s -o - | tar xzf - -C $BUILD_DIR/bin
-curl $LS_PACKAGE -o $BUILD_DIR/bin/logstash.jar
+curl -L $LS_PACKAGE -o $BUILD_DIR/bin/logstash.jar
+curl -L $ES_PACKAGE -s -o - | tar xzf - -C $BUILD_DIR/bin
+mv $BUILD_DIR/bin/elasticsearch-0.19.8 $BUILD_DIR/bin/elasticsearch
