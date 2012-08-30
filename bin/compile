@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+echo "-----> Logstash buildpack: 1.1.1/ES 0.19.8"
+
+# fail fast
+set -e
+
+# debug
+# set -x
+
+ES_PACKAGE='https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.8.tar.gz'
+LS_PACKAGE='http://semicomplete.com/files/logstash/logstash-1.1.1-monolithic.jar'
+
+# parse and derive params
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+function error() {
+  echo " !     $*"
+  exit 1
+}
+
+function mktmpdir() {
+  dir=$(mktemp -t node-$1-XXXX)
+  rm -rf $dir
+  mkdir -p $dir
+  echo $dir
+}
+
+mkdir -p "$BUILD_DIR/bin"
+curl $ES_PACKAGE -s -o - | tar xzf - -C $BUILD_DIR/bin
+curl $LS_PACKAGE -o $BUILD_DIR/bin/logstash.jar
